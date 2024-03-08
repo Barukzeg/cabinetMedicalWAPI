@@ -4,7 +4,7 @@
     
     
     $server = "localhost";
-    $db = "r401_api";
+    $db = "CabinetMedical_AUTH";
     $login = "root";
     $mdp = "";
         
