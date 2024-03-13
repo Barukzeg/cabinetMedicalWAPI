@@ -58,7 +58,7 @@
             }
 
             //Traitement des données
-            $matchingData=updateUsager($_GET['id'],$data_init);
+            $matchingData=updateUsager($_GET['id'], $data_init);
             if (empty($matchingData)){
                 deliver_response(404, "Not Found");
             } else {
@@ -72,7 +72,7 @@
             
             //Traitement des données
             if (isset($_GET['id'])){
-                $matchingData=updateUsager(,$_GET['id'],$data);
+                $matchingData=updateUsager($_GET['id'], $data);
                 if (empty($matchingData)){
                     deliver_response(404, "Not Found");
                 } else {
