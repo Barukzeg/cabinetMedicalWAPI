@@ -16,10 +16,9 @@
     }
 
     function getUsager(int $id){
-        $query = $linkpdo->prepare("SELECT p.*, u.* 
-                                        FROM Personne p, Usager u 
-                                        WHERE p.idPersonne = u.idUsager
-                                        AND u.idUsager = :id");
+        $query = $linkpdo->prepare("SELECT u.* 
+                                        FROM Usager u 
+                                        WHERE u.idUsager = :id");
         $query->bindParam(':id', $id);
         $query->execute();
 
@@ -27,43 +26,46 @@
         return $matchingData;
     }
 
-    function addUsager(Usager $usager) {
+    function addUsager($data) {
 
-        $query = $linkpdo->prepare("INSERT INTO Usager (id_usager, civilite, nom, prenom, sexe, adresse, code_postal, ville, date_nais, lieu_nais, num_secu) 
-            VALUES (:idUsager, :civilite, :nom, :prenom, :sexe, :adresse, :codePostal, ville, :dateNaissance, :lieuNaissance, :NumSecuriteSociale)");
+        $query = $linkpdo->prepare("INSERT INTO Usager (id_usager, civilite, nom, prenom, sexe, adresse, code_postal, ville, date_nais, lieu_nais, num_secu, id_medecin) 
+            VALUES (:idUsager, :civilite, :nom, :prenom, :sexe, :adresse, :codePostal, ville, :dateNaissance, :lieuNaissance, :NumSecuriteSociale, :id_medecin)");
 
-        $id = $usager->getIdUsager();
+        $id = $data['idUsager'];
         $query->bindParam(':idUsager', $id);
 
-        $civilite = $usager->getCivilite();
+        $civilite = $data['civilite'];
         $query->bindParam(':civilite', $civilite);
 
-        $nom = $usager->getNom();
+        $nom = $data['nom'];
         $query->bindParam(':nom', $nom);
 
-        $prenom = $usager->getPrenom();
+        $prenom = $data['prenom'];
         $query->bindParam(':prenom', $prenom);
 
-        $sexe = $usager->getSexe();
+        $sexe = $data['sexe'];
         $query->bindParam(':sexe', $sexe);
 
-        $adresse = $usager->getAdresse();
+        $adresse = $data['adresse'];
         $query->bindParam(':adresse', $adresse);
 
-        $codePostal = $usager->getCodePostal();
+        $codePostal = $data['codePostal'];
         $query->bindParam(':codePostal', $codePostal);
 
-        $ville = $usager->getVille();
+        $ville = $data['ville'];
         $query->bindParam(':ville', $ville);
 
-        $dateNaissance = $usager->getDateNaissance()->format('Y-m-d');
+        $dateNaissance = $data['dateNaissance'];
         $query->bindParam(':dateNaissance', $dateNaissance);
 
-        $lieuNaissance = $usager->getLieuNaissance();
+        $lieuNaissance = $data['lieuNaissance'];
         $query->bindParam(':lieuNaissance', $lieuNaissance);
 
-        $numSecuriteSociale = $usager->getNumSecuriteSociale();
+        $numSecuriteSociale = $data['NumSecuriteSociale'];
         $query->bindParam(':NumSecuriteSociale', $numSecuriteSociale);
+
+        $idMedecin = $data['idMedecin'];
+        $query->bindParam(':id_medecin', $idMedecin);
 
         $query->execute();
 
@@ -73,41 +75,54 @@
 
     function updateUsager(int $id){
         $query = $linkpdo->prepare("UPDATE Usager
-            SET civilite = :civilite, nom = :nom, prenom = :prenom, sexe = :sexe, adresse = :adresse, code_postal = :codePostal, ville = :ville, date_nais = :dateNaissance, lieu_nais = :lieuNaissance, num_secu = :NumSecuriteSociale
+            SET civilite = :civilite, 
+                nom = :nom, 
+                prenom = :prenom, 
+                sexe = :sexe, 
+                adresse = :adresse, 
+                code_postal = :codePostal, 
+                ville = :ville, 
+                date_nais = :dateNaissance, 
+                lieu_nais = :lieuNaissance, 
+                num_secu = :NumSecuriteSociale,
+                id_medecin = :id_medecin
             WHERE idUsager = :id");
 
-        $id = $usager->getIdUsager();
+        $id = $data['idUsager'];
         $query->bindParam(':idUsager', $id);
 
-        $civilite = $usager->getCivilite();
+        $civilite = $data['civilite'];
         $query->bindParam(':civilite', $civilite);
 
-        $nom = $usager->getNom();
+        $nom = $data['nom'];
         $query->bindParam(':nom', $nom);
 
-        $prenom = $usager->getPrenom();
+        $prenom = $data['prenom'];
         $query->bindParam(':prenom', $prenom);
 
-        $sexe = $usager->getSexe();
+        $sexe = $data['sexe'];
         $query->bindParam(':sexe', $sexe);
 
-        $adresse = $usager->getAdresse();
+        $adresse = $data['adresse'];
         $query->bindParam(':adresse', $adresse);
 
-        $codePostal = $usager->getCodePostal();
+        $codePostal = $data['codePostal'];
         $query->bindParam(':codePostal', $codePostal);
 
-        $ville = $usager->getVille();
+        $ville = $data['ville'];
         $query->bindParam(':ville', $ville);
 
-        $dateNaissance = $usager->getDateNaissance()->format('Y-m-d');
+        $dateNaissance = $data['dateNaissance'];
         $query->bindParam(':dateNaissance', $dateNaissance);
 
-        $lieuNaissance = $usager->getLieuNaissance();
+        $lieuNaissance = $data['lieuNaissance'];
         $query->bindParam(':lieuNaissance', $lieuNaissance);
 
-        $numSecuriteSociale = $usager->getNumSecuriteSociale();
+        $numSecuriteSociale = $data['NumSecuriteSociale'];
         $query->bindParam(':NumSecuriteSociale', $numSecuriteSociale);
+
+        $id_medecin = $data['idMedecin'];
+        $query->bindParam(':id_medecin', $id_medecin);
 
         $query->execute();
 
