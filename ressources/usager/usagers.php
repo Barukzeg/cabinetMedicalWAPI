@@ -1,6 +1,7 @@
 <?php
 
-    include 'usagerFunctions.php';
+    require_once './usagersFunctions.php';
+    require_once '../response.php';
 
     //Connexion
     $server = "localhost";
@@ -9,8 +10,6 @@
     $mdp = "";
 
     $connexion = new PDO("mysql:host=$server;dbname=$db", $login, $mdp);
-
-
 
     /// Identification du type de méthode HTTP envoyée par le client
     $http_method = $_SERVER['REQUEST_METHOD'];
