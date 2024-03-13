@@ -78,7 +78,7 @@
                     deliver_response(200, "OK", $matchingData);
                 }
             } else {
-                deliver_response(400, "Bad Request");
+                deliver_response(400, "The 'id' is missing");
             }
         break;
         case "DELETE" :
@@ -91,7 +91,8 @@
                     deliver_response(200, "OK", $matchingData);
                 }
             } else {
-                deliver_response(400, "Bad Request");
+                deliver_response(400, "The 'id' is missing");
             }
+        break;
     }
 ?>
