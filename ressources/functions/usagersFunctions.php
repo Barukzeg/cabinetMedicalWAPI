@@ -1,6 +1,6 @@
 <?php
 
-    require_once('../../bd/bdd.php');
+    require_once('../bd/bdd.php');
 
     function getAllUsager(){
         $linkpdo = BDD::getBDD()->getConnection();
