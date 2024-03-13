@@ -5,7 +5,7 @@
 
         ///Connexion au serveur MySQL
         private $server = "localhost";
-        private $db = "cabinet_medical";
+        private $db = "cabinetmedical";
         private $login = "root";
         private $mdp = "";
 
@@ -15,7 +15,6 @@
                 $this -> connection = new PDO("mysql:host=$this->server;dbname=$this->db", $this->login, $this->mdp);
             }
             catch (Exception $e) {
-                header('Location: ../pages/erreur.php');
                 exit();
             };
         }

@@ -1,14 +1,9 @@
 <?php
 
-    //Connexion
-    $server = "localhost";
-    $db = "cabinetmedical";
-    $login = "root";
-    $mdp = "";
-
-    $linkpdo = new PDO("mysql:host=$server;dbname=$db", $login, $mdp);
+    require_once('../../bd/bdd.php');
 
     function getAllUsager(){
+        $linkpdo = BDD::getBDD()->getConnection();
         $query = $linkpdo->prepare("SELECT * FROM usager;");
         $query->execute();
         $matchingData = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -16,6 +11,7 @@
     }
 
     function getUsager(int $id){
+        $linkpdo = BDD::getBDD()->getConnection();
         $query = $linkpdo->prepare("SELECT u.* 
                                         FROM Usager u 
                                         WHERE u.idUsager = :id");
@@ -27,6 +23,7 @@
     }
 
     function addUsager($data) {
+        $linkpdo = BDD::getBDD()->getConnection();
 
         $query = $linkpdo->prepare("INSERT INTO Usager (id_usager, civilite, nom, prenom, sexe, adresse, code_postal, ville, date_nais, lieu_nais, num_secu, id_medecin) 
             VALUES (:idUsager, :civilite, :nom, :prenom, :sexe, :adresse, :codePostal, ville, :dateNaissance, :lieuNaissance, :NumSecuriteSociale, :id_medecin)");
@@ -73,7 +70,8 @@
         return $matchingData;
     }
 
-    function updateUsager(int $id){
+    function updateUsager(int $id, $data){
+        $linkpdo = BDD::getBDD()->getConnection();
         $query = $linkpdo->prepare("UPDATE Usager
             SET civilite = :civilite, 
                 nom = :nom, 
@@ -131,6 +129,7 @@
     }
 
     function delUsager(int $id){
+        $linkpdo = BDD::getBDD()->getConnection();
         $query = $linkpdo->prepare("DELETE FROM Usager WHERE idUsager = :id");
 
         $query->bindParam(':id', $id);
