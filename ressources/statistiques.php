@@ -1,16 +1,7 @@
 <?php
 
-    include 'usagerFunctions.php';
-
-    //Connexion
-    $server = "localhost";
-    $db = "cabinetmedical";
-    $login = "root";
-    $mdp = "";
-
-    $connexion = new PDO("mysql:host=$server;dbname=$db", $login, $mdp);
-
-
+    require_once './functions/statistiqueFunctions.php';
+    require_once './functions/response.php';
 
     /// Identification du type de méthode HTTP envoyée par le client
     $http_method = $_SERVER['REQUEST_METHOD'];
