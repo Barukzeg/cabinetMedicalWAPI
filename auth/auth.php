@@ -2,12 +2,12 @@
 
     require "jwt_utils.php";
     
-    
     $server = "localhost";
     $db = "CabinetMedical_AUTH";
     $login = "root";
     $mdp = "";
         
+    //Connexion à la base de données
     try {
         $connexion = new PDO("mysql:host=$server;dbname=$db", $login, $mdp);
     } catch(PDOException $e) {
@@ -16,28 +16,30 @@
 
     //Recuperation de la methode POST pour l'envoie du token
     $http_method = $_SERVER['REQUEST_METHOD'];
-    if($http_method == "POST"){
+    if ($http_method == "POST") {
+
+        //Recuperation du corps de la requete
         $postedData = file_get_contents('php://input');
         $data = json_decode($postedData,true);
 
-        if(!isset($data['login']) || !isset($data['password'])){
+        //Verification de la presence des données
+        if (!isset($data['login']) || !isset($data['mdp'])) {
             deliver_response(400, "Bad Request");
-        
-        }else{
+        } else {
 
             //Recuperation des données
             $login = $data['login'];
-            $password = $data['password'];
+            $password = $data['mdp'];
 
             //Verification du login et du mot de passe
-            $query = "SELECT count(*) FROM user WHERE login = :login AND password = :password";
+            $query = "SELECT count(*) FROM user_auth WHERE login = :login AND mdp = :password";
             $stmt = $connexion->prepare($query);
             $stmt->bindParam(':login', $login);
             $stmt->bindParam(':password', $password);
             $stmt->execute();
             $result = $stmt->fetch();
 
-            //Identifiant correct
+            //Identifiants corrects
             if($result>=1){
 
                 //Creation du token
@@ -45,11 +47,14 @@
                     "alg" => "HS256",
                     "typ" => "JWT"
                 );
+
                 $payload = array(
                     "login" => $login,
                     "exp" => time() + 3600
                 );
+
                 $secret = "secret";
+
                 $token = generate_jwt($headers, $payload, $secret);
 
                 //Envoi de la reponse et du token
@@ -60,10 +65,14 @@
                 deliver_response(401, "Unauthorized");
             }
         }
-    }else{
+
+    } else {
+
+        //Methode non autorisée (autre que POST)
         deliver_response(400, "Bad Request");
     }
 
+    //Fonction de renvoie de la reponse
     function deliver_response($status_code, $status_message, $data=null){
         // var_dump($data);
         $json_response = json_encode($data);
