@@ -7,7 +7,7 @@ CREATE TABLE user_auth(
    UNIQUE(id_auth)
 );
 
-ALTER TABLE user_auth MODIFY 'id_auth' int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE user_auth MODIFY id_auth int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 INSERT INTO user_auth (login, mdp, id_auth, role) VALUES
 ('admin', 'pascal', 1, 'admin'),
