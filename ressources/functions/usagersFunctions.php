@@ -26,7 +26,7 @@
         $linkpdo = BDD::getBDD()->getConnection();
 
         $query = $linkpdo->prepare("INSERT INTO Usager (civilite, nom, prenom, sexe, adresse, code_postal, ville, date_nais, lieu_nais, num_secu, id_medecin) 
-            VALUES (:civilite, :nom, :prenom, :sexe, :adresse, :code_postal, ville, :date_nais, :lieu_nais, :num_secu, :id_medecin)");
+            VALUES (:civilite, :nom, :prenom, :sexe, :adresse, :code_postal, :ville, :date_nais, :lieu_nais, :num_secu, :id_medecin)");
 
         $civilite = $data['civilite'];
         $query->bindParam(':civilite', $civilite);

@@ -1,6 +1,6 @@
 <?php
 
-    require_once('../../bd/bdd.php');
+    require_once('../bd/bdd.php');
 
     function getAllMedecin(){
         $linkpdo = BDD::getBDD()->getConnection();
@@ -14,7 +14,7 @@
         $linkpdo = BDD::getBDD()->getConnection();
         $query = $linkpdo->prepare("SELECT u.* 
                                         FROM Medecin u 
-                                        WHERE u.idMedecin = :id");
+                                        WHERE u.id_medecin = :id");
         $query->bindParam(':id', $id);
         $query->execute();
 
@@ -49,10 +49,10 @@
             SET civilite = :civilite, 
                 nom = :nom, 
                 prenom = :prenom
-            WHERE idMedecin = :id");
+            WHERE id_medecin = :id");
 
-        $id = $data['idMedecin'];
-        $query->bindParam(':idMedecin', $id);
+        $id = $data['id_medecin'];
+        $query->bindParam(':id_medecin', $id);
 
         $civilite = $data['civilite'];
         $query->bindParam(':civilite', $civilite);
@@ -71,7 +71,7 @@
 
     function delMedecin(int $id){
         $linkpdo = BDD::getBDD()->getConnection();
-        $query = $linkpdo->prepare("DELETE FROM Medecin WHERE idMedecin = :id");
+        $query = $linkpdo->prepare("DELETE FROM Medecin WHERE id_medecin = :id");
 
         $query->bindParam(':id', $id);
         $query->execute();
