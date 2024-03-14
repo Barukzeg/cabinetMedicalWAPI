@@ -43,11 +43,11 @@
             
             //Traitement des données
             if (isset($_GET['id'])){
-                $matchingData=updateUsager($_GET['id'],$data, true);
-                if (empty($matchingData)){
+                $success=updateUsager($_GET['id'],$data);
+                if (!$success){
                     deliver_response(404, "Not Found");
                 } else {
-                    deliver_response(200, "OK", $matchingData);
+                    deliver_response(200, "OK");
                 }
             } else {
                 deliver_response(400, "The 'id' is missing");
@@ -60,11 +60,11 @@
             
             //Traitement des données
             if (isset($_GET['id'])){
-                $matchingData=updateUsager($_GET['id'],$data, false);
-                if (empty($matchingData)){
+                $success=updateUsager($_GET['id'],$data);
+                if (!$success){
                     deliver_response(404, "Not Found");
                 } else {
-                    deliver_response(200, "OK", $matchingData);
+                    deliver_response(200, "OK");
                 }
             } else {
                 deliver_response(400, "The 'id' is missing");
@@ -73,11 +73,11 @@
         case "DELETE" :
             //Traitement des données
             if (isset($_GET['id'])){
-                $matchingData=delUsager($_GET['id']);
-                if (empty($matchingData)){
+                $success=delUsager($_GET['id']);
+                if (!$success){
                     deliver_response(404, "Not Found");
                 } else {
-                    deliver_response(200, "OK", $matchingData);
+                    deliver_response(200, "OK");
                 }
             } else {
                 deliver_response(400, "The 'id' is missing");

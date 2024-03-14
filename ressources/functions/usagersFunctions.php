@@ -18,7 +18,7 @@
         $query->bindParam(':id', $id);
         $query->execute();
 
-        $matchingData = $query->fetchAll(PDO::FETCH_ASSOC);
+        $matchingData = $query->fetch(PDO::FETCH_ASSOC);
         return $matchingData;
     }
 
@@ -67,7 +67,7 @@
         return $matchingData;
     }
 
-    function updateUsager(int $id, $data, bool $isPatch){
+    function updateUsager(int $id, $data){
         $linkpdo = BDD::getBDD()->getConnection();
         
         try {
@@ -96,32 +96,53 @@
                 
                 $civilite = $data['civilite'];
                 $query->bindParam(':civilite', $civilite);
+
                 $nom = $data['nom'];
                 $query->bindParam(':nom', $nom);
+
                 $prenom = $data['prenom'];
                 $query->bindParam(':prenom', $prenom);
+
                 $sexe = $data['sexe'];
                 $query->bindParam(':sexe', $sexe);
+
                 $adresse = $data['adresse'];
                 $query->bindParam(':adresse', $adresse);
+
                 $codePostal = $data['code_postal'];
                 $query->bindParam(':code_postal', $codePostal);
+
                 $ville = $data['ville'];
                 $query->bindParam(':ville', $ville);
+
                 $dateNaissance = $data['date_nais'];
                 $query->bindParam(':date_nais', $dateNaissance);
+
                 $lieuNaissance = $data['lieu_nais'];
                 $query->bindParam(':lieu_nais', $lieuNaissance);
+
                 $numSecuriteSociale = $data['num_secu'];
                 $query->bindParam(':num_secu', $numSecuriteSociale);
+
                 $id_medecin = $data['id_medecin'];
                 $query->bindParam(':id_medecin', $id_medecin);
-                $query->execute();
-                $matchingData = $query->fetchAll(PDO::FETCH_ASSOC);
-            return $matchingData;
-            } catch (PDOException $e) {
-                die("Erreur de mise à jour dans la base de données: " . $e->getMessage());
-            }
+
+                $update = $query->execute();
+                if ($update) {
+                    $rowCount = $query->rowCount();
+                    if ($rowCount > 0) {
+                        $success = true;
+                    } else {
+                        $success = false;
+                    }
+                } else {
+                    $success = false;
+                }
+            return $success;
+
+        } catch (PDOException $e) {
+            die("Erreur de mise à jour dans la base de données: " . $e->getMessage());
+        }
     }
 
     function delUsager(int $id){
@@ -129,10 +150,19 @@
         $query = $linkpdo->prepare("DELETE FROM Usager WHERE id_usager = :id");
 
         $query->bindParam(':id', $id);
-        $query->execute();
+        $delete = $query->execute();
 
-        $matchingData = $query->fetchAll(PDO::FETCH_ASSOC);
-        return $matchingData;
+        if ($delete) {
+            $rowCount = $query->rowCount();
+            if ($rowCount > 0) {
+                $success = true;
+            } else {
+                $success = false;
+            }
+        } else {
+            $success = false;
+        }
+        return $success;
     }
     
 ?>
