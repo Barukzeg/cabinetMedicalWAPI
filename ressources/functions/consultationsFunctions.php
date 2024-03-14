@@ -28,9 +28,6 @@
         $query = $linkpdo->prepare("INSERT INTO Consultation (date_consult, heure_consult, duree_consult, id_medecin, id_usager) 
             VALUES (:date_consult, :heure_consult, :duree_consult, :id_medecin, :id_usager)");
 
-        $id = $data['idConsultation'];
-        $query->bindParam(':id_consult', $id);
-
         $date = $data['date_consult'];
         $query->bindParam(':date_consult', $date);
 

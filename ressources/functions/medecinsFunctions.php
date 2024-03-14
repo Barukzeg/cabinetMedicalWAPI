@@ -28,9 +28,6 @@
         $query = $linkpdo->prepare("INSERT INTO Medecin (civilite, nom, prenom) 
             VALUES (:civilite, :nom, :prenom)");
 
-        $id = $data['idMedecin'];
-        $query->bindParam(':idMedecin', $id);
-
         $civilite = $data['civilite'];
         $query->bindParam(':civilite', $civilite);
 
