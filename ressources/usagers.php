@@ -39,21 +39,18 @@
         case "PATCH" :
             // Récupération des données dans le corps
             $postedData = file_get_contents('php://input');
-            $data_init = getUsager($_GET['id']);
             $data = json_decode($postedData,true); //Reçoit du json et renvoi une adaptation exploitable en php. Le paramètre true impose un tableau en retour et non un objet.
             
-            foreach($data as $key => $value){
-                if($value==null){
-                    $data_init[$key][$value]=$data[$key][$value];
-                }
-            }
-
             //Traitement des données
-            $matchingData=updateUsager($_GET['id'],$data_init);
-            if (empty($matchingData)){
-                deliver_response(404, "Not Found");
+            if (isset($_GET['id'])){
+                $matchingData=updateUsager($_GET['id'],$data, true);
+                if (empty($matchingData)){
+                    deliver_response(404, "Not Found");
+                } else {
+                    deliver_response(200, "OK", $matchingData);
+                }
             } else {
-                deliver_response(200, "OK", $matchingData);
+                deliver_response(400, "The 'id' is missing");
             }
         break;
         case "PUT" :
@@ -63,7 +60,7 @@
             
             //Traitement des données
             if (isset($_GET['id'])){
-                $matchingData=updateUsager($_GET['id'],$data);
+                $matchingData=updateUsager($_GET['id'],$data, false);
                 if (empty($matchingData)){
                     deliver_response(404, "Not Found");
                 } else {
