@@ -26,7 +26,7 @@
         $linkpdo = BDD::getBDD()->getConnection();
 
         $query = $linkpdo->prepare("INSERT INTO Usager (civilite, nom, prenom, sexe, adresse, code_postal, ville, date_nais, lieu_nais, num_secu, id_medecin) 
-            VALUES (:civilite, :nom, :prenom, :sexe, :adresse, :codePostal, ville, :dateNaissance, :lieuNaissance, :NumSecuriteSociale, :id_medecin)");
+            VALUES (:civilite, :nom, :prenom, :sexe, :adresse, :code_postal, ville, :date_nais, :lieu_nais, :num_secu, :id_medecin)");
 
         $civilite = $data['civilite'];
         $query->bindParam(':civilite', $civilite);
@@ -43,22 +43,22 @@
         $adresse = $data['adresse'];
         $query->bindParam(':adresse', $adresse);
 
-        $codePostal = $data['codePostal'];
-        $query->bindParam(':codePostal', $codePostal);
+        $codePostal = $data['code_postal'];
+        $query->bindParam(':code_postal', $codePostal);
 
         $ville = $data['ville'];
         $query->bindParam(':ville', $ville);
 
-        $dateNaissance = $data['dateNaissance'];
-        $query->bindParam(':dateNaissance', $dateNaissance);
+        $dateNaissance = $data['date_nais'];
+        $query->bindParam(':date_nais', $dateNaissance);
 
-        $lieuNaissance = $data['lieuNaissance'];
-        $query->bindParam(':lieuNaissance', $lieuNaissance);
+        $lieuNaissance = $data['lieu_nais'];
+        $query->bindParam(':lieu_nais', $lieuNaissance);
 
-        $numSecuriteSociale = $data['NumSecuriteSociale'];
-        $query->bindParam(':NumSecuriteSociale', $numSecuriteSociale);
+        $numSecuriteSociale = $data['num_secu'];
+        $query->bindParam(':num_secu', $numSecuriteSociale);
 
-        $idMedecin = $data['idMedecin'];
+        $idMedecin = $data['id_medecin'];
         $query->bindParam(':id_medecin', $idMedecin);
 
         $query->execute();
@@ -75,11 +75,11 @@
                 prenom = :prenom, 
                 sexe = :sexe, 
                 adresse = :adresse, 
-                code_postal = :codePostal, 
+                code_postal = :code_postal, 
                 ville = :ville, 
-                date_nais = :dateNaissance, 
-                lieu_nais = :lieuNaissance, 
-                num_secu = :NumSecuriteSociale,
+                date_nais = :date_nais, 
+                lieu_nais = :lieu_nais, 
+                num_secu = :num_secu,
                 id_medecin = :id_medecin
             WHERE idUsager = :id");
 
@@ -101,22 +101,22 @@
         $adresse = $data['adresse'];
         $query->bindParam(':adresse', $adresse);
 
-        $codePostal = $data['codePostal'];
-        $query->bindParam(':codePostal', $codePostal);
+        $codePostal = $data['code_postal'];
+        $query->bindParam(':code_postal', $codePostal);
 
         $ville = $data['ville'];
         $query->bindParam(':ville', $ville);
 
-        $dateNaissance = $data['dateNaissance'];
-        $query->bindParam(':dateNaissance', $dateNaissance);
+        $dateNaissance = $data['date_nais'];
+        $query->bindParam(':date_nais', $dateNaissance);
 
-        $lieuNaissance = $data['lieuNaissance'];
-        $query->bindParam(':lieuNaissance', $lieuNaissance);
+        $lieuNaissance = $data['lieu_nais'];
+        $query->bindParam(':lieu_nais', $lieuNaissance);
 
-        $numSecuriteSociale = $data['NumSecuriteSociale'];
-        $query->bindParam(':NumSecuriteSociale', $numSecuriteSociale);
+        $numSecuriteSociale = $data['num_secu'];
+        $query->bindParam(':num_secu', $numSecuriteSociale);
 
-        $id_medecin = $data['idMedecin'];
+        $id_medecin = $data['id_medecin'];
         $query->bindParam(':id_medecin', $id_medecin);
 
         $query->execute();
