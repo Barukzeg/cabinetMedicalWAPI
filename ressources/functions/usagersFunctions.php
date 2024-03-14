@@ -70,19 +70,15 @@
     function updateUsager(int $id, $data, bool $isPatch){
         $linkpdo = BDD::getBDD()->getConnection();
         
-        if ($isPatch) {
-
+        try {
             $get = getUsager($id);
-            echo json_encode($get);
-            echo json_encode($data);
+            
             foreach ($get as $key => $value) {
                 if (!isset($data[$key])) {
                     $data[$key] = $value;
                 }
             }
-        }
-
-        $query = $linkpdo->prepare("UPDATE Usager
+            $query = $linkpdo->prepare("UPDATE Usager
             SET civilite = :civilite, 
                 nom = :nom, 
                 prenom = :prenom, 
@@ -96,45 +92,36 @@
                 id_medecin = :id_medecin
             WHERE id_usager = :id_usager");
         
-        $query->bindParam(':id_usager', $id);
-
-        $civilite = $data['civilite'];
-        $query->bindParam(':civilite', $civilite);
-
-        $nom = $data['nom'];
-        $query->bindParam(':nom', $nom);
-
-        $prenom = $data['prenom'];
-        $query->bindParam(':prenom', $prenom);
-
-        $sexe = $data['sexe'];
-        $query->bindParam(':sexe', $sexe);
-
-        $adresse = $data['adresse'];
-        $query->bindParam(':adresse', $adresse);
-
-        $codePostal = $data['code_postal'];
-        $query->bindParam(':code_postal', $codePostal);
-
-        $ville = $data['ville'];
-        $query->bindParam(':ville', $ville);
-
-        $dateNaissance = $data['date_nais'];
-        $query->bindParam(':date_nais', $dateNaissance);
-
-        $lieuNaissance = $data['lieu_nais'];
-        $query->bindParam(':lieu_nais', $lieuNaissance);
-
-        $numSecuriteSociale = $data['num_secu'];
-        $query->bindParam(':num_secu', $numSecuriteSociale);
-
-        $id_medecin = $data['id_medecin'];
-        $query->bindParam(':id_medecin', $id_medecin);
-
-        $query->execute();
-
-        $matchingData = $query->fetchAll(PDO::FETCH_ASSOC);
-        return $matchingData;
+                $query->bindParam(':id_usager', $id);
+                
+                $civilite = $data['civilite'];
+                $query->bindParam(':civilite', $civilite);
+                $nom = $data['nom'];
+                $query->bindParam(':nom', $nom);
+                $prenom = $data['prenom'];
+                $query->bindParam(':prenom', $prenom);
+                $sexe = $data['sexe'];
+                $query->bindParam(':sexe', $sexe);
+                $adresse = $data['adresse'];
+                $query->bindParam(':adresse', $adresse);
+                $codePostal = $data['code_postal'];
+                $query->bindParam(':code_postal', $codePostal);
+                $ville = $data['ville'];
+                $query->bindParam(':ville', $ville);
+                $dateNaissance = $data['date_nais'];
+                $query->bindParam(':date_nais', $dateNaissance);
+                $lieuNaissance = $data['lieu_nais'];
+                $query->bindParam(':lieu_nais', $lieuNaissance);
+                $numSecuriteSociale = $data['num_secu'];
+                $query->bindParam(':num_secu', $numSecuriteSociale);
+                $id_medecin = $data['id_medecin'];
+                $query->bindParam(':id_medecin', $id_medecin);
+                $query->execute();
+                $matchingData = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $matchingData;
+            } catch (PDOException $e) {
+                die("Erreur de mise à jour dans la base de données: " . $e->getMessage());
+            }
     }
 
     function delUsager(int $id){
