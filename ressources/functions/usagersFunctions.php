@@ -25,11 +25,8 @@
     function addUsager($data) {
         $linkpdo = BDD::getBDD()->getConnection();
 
-        $query = $linkpdo->prepare("INSERT INTO Usager (id_usager, civilite, nom, prenom, sexe, adresse, code_postal, ville, date_nais, lieu_nais, num_secu, id_medecin) 
-            VALUES (:idUsager, :civilite, :nom, :prenom, :sexe, :adresse, :codePostal, ville, :dateNaissance, :lieuNaissance, :NumSecuriteSociale, :id_medecin)");
-
-        $id = $data['idUsager'];
-        $query->bindParam(':idUsager', $id);
+        $query = $linkpdo->prepare("INSERT INTO Usager (civilite, nom, prenom, sexe, adresse, code_postal, ville, date_nais, lieu_nais, num_secu, id_medecin) 
+            VALUES (:civilite, :nom, :prenom, :sexe, :adresse, :codePostal, ville, :dateNaissance, :lieuNaissance, :NumSecuriteSociale, :id_medecin)");
 
         $civilite = $data['civilite'];
         $query->bindParam(':civilite', $civilite);
