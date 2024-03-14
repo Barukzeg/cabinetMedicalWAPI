@@ -69,16 +69,15 @@
 
     function updateUsager(int $id, $data, bool $isPatch){
         $linkpdo = BDD::getBDD()->getConnection();
-
-        if ($isPatch) {
-            $data_old = getUsager($id);
-            $data_new = array();
         
-            foreach ($data_old as $key => $value_old) {
-                if (isset($data[$key])) {
-                    $data_new[$key] = $data[$key];
-                } else {
-                    $data_new[$key] = $value_old;
+        if ($isPatch) {
+
+            $get = getUsager($id);
+            echo json_encode($get);
+            echo json_encode($data);
+            foreach ($get as $key => $value) {
+                if (!isset($data[$key])) {
+                    $data[$key] = $value;
                 }
             }
         }
@@ -95,42 +94,41 @@
                 lieu_nais = :lieu_nais, 
                 num_secu = :num_secu,
                 id_medecin = :id_medecin
-            WHERE id_usager = :id");
-
+            WHERE id_usager = :id_usager");
         
         $query->bindParam(':id_usager', $id);
 
-        $civilite = $data_new['civilite'];
+        $civilite = $data['civilite'];
         $query->bindParam(':civilite', $civilite);
 
-        $nom = $data_new['nom'];
+        $nom = $data['nom'];
         $query->bindParam(':nom', $nom);
 
-        $prenom = $data_new['prenom'];
+        $prenom = $data['prenom'];
         $query->bindParam(':prenom', $prenom);
 
-        $sexe = $data_new['sexe'];
+        $sexe = $data['sexe'];
         $query->bindParam(':sexe', $sexe);
 
-        $adresse = $data_new['adresse'];
+        $adresse = $data['adresse'];
         $query->bindParam(':adresse', $adresse);
 
-        $codePostal = $data_new['code_postal'];
+        $codePostal = $data['code_postal'];
         $query->bindParam(':code_postal', $codePostal);
 
-        $ville = $data_new['ville'];
+        $ville = $data['ville'];
         $query->bindParam(':ville', $ville);
 
-        $dateNaissance = $data_new['date_nais'];
+        $dateNaissance = $data['date_nais'];
         $query->bindParam(':date_nais', $dateNaissance);
 
-        $lieuNaissance = $data_new['lieu_nais'];
+        $lieuNaissance = $data['lieu_nais'];
         $query->bindParam(':lieu_nais', $lieuNaissance);
 
-        $numSecuriteSociale = $data_new['num_secu'];
+        $numSecuriteSociale = $data['num_secu'];
         $query->bindParam(':num_secu', $numSecuriteSociale);
 
-        $id_medecin = $data_new['id_medecin'];
+        $id_medecin = $data['id_medecin'];
         $query->bindParam(':id_medecin', $id_medecin);
 
         $query->execute();
