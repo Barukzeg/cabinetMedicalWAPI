@@ -25,8 +25,8 @@
     function addConsultation($data) {
         $linkpdo = BDD::getBDD()->getConnection();
 
-        $query = $linkpdo->prepare("INSERT INTO Consultation (id_consult, date_consult, heure_consult, duree_consult, id_medecin, id_usager) 
-            VALUES (:id_consult, :date_consult, :heure_consult, :duree_consult, :id_medecin, :id_usager)");
+        $query = $linkpdo->prepare("INSERT INTO Consultation (date_consult, heure_consult, duree_consult, id_medecin, id_usager) 
+            VALUES (:date_consult, :heure_consult, :duree_consult, :id_medecin, :id_usager)");
 
         $id = $data['idConsultation'];
         $query->bindParam(':id_consult', $id);

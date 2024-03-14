@@ -25,8 +25,8 @@
     function addMedecin($data) {
         $linkpdo = BDD::getBDD()->getConnection();
 
-        $query = $linkpdo->prepare("INSERT INTO Medecin (id_Medecin, civilite, nom, prenom) 
-            VALUES (:idMedecin, :civilite, :nom, :prenom)");
+        $query = $linkpdo->prepare("INSERT INTO Medecin (civilite, nom, prenom) 
+            VALUES (:civilite, :nom, :prenom)");
 
         $id = $data['idMedecin'];
         $query->bindParam(':idMedecin', $id);
