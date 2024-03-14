@@ -7,16 +7,26 @@
     $http_method = $_SERVER['REQUEST_METHOD'];
 
     switch ($http_method){
+
+        // Si la méthode est GET (récupération de données)
         case "GET" :
-            //Récupération des données dans l’URL si nécessaire
+
+            //Si l'id est set : on le récupère et récupère l'usager correspondant
             if(isset($_GET['id'])){
+
+                //Récupération de l'id
                 $id=htmlspecialchars($_GET['id']);
-                //Traitement des données
+
+                //Appel de la fonction pour récupérer l'usager correspondant à l'id
                 $matchingData=getUsager($id);
+
+            //Si l'id n'est pas set : on récupère toutes les données
             } else {
-                //Appel de la fonction de lecture des phrases
+
+                //Appel de la fonction pour récupérer tous les usagers
                 $matchingData=getAllUsager();
             }
+
             //Envoi de la réponse
             if (empty($matchingData)){
                 deliver_response(404, "Not Found");
@@ -25,25 +35,39 @@
             }
 
         break;
+
+        // Si la méthode est POST (création de données)
         case "POST" :
+
             // Récupération des données dans le corps
             $postedData = file_get_contents('php://input');
-            $data = json_decode($postedData,true); //Reçoit du json et renvoi une adaptation exploitable en php. Le paramètre true impose un tableau en retour et non un objet.
+
+            //Transforme le json reçu en array (d'ou le 'true') exploitable en php
+            $data = json_decode($postedData,true);
             
-            //Traitement des données
+            //Ajoût de l'usager
             $matchingData=addUsager($data);
 
+            //Envoi de la réponse
             deliver_response(201, "Created", $matchingData);
 
         break;
+
+        // Si la méthode est PATCH (mise à jour de données partielles))
         case "PATCH" :
+
             // Récupération des données dans le corps
             $postedData = file_get_contents('php://input');
-            $data = json_decode($postedData,true); //Reçoit du json et renvoi une adaptation exploitable en php. Le paramètre true impose un tableau en retour et non un objet.
+
+            //Transforme le json reçu en array (d'ou le 'true') exploitable en php
+            $data = json_decode($postedData,true);
             
             //Traitement des données
             if (isset($_GET['id'])){
+
+                // Fonction pour mettre à jour l'usager
                 $success=updateUsager($_GET['id'],$data);
+
                 if (!$success){
                     deliver_response(404, "Not Found");
                 } else {
@@ -53,14 +77,21 @@
                 deliver_response(400, "The 'id' is missing");
             }
         break;
+
+        // Si la méthode est PUT (mise à jour de données complètes)
         case "PUT" :
             // Récupération des données dans le corps
             $postedData = file_get_contents('php://input');
-            $data = json_decode($postedData,true); //Reçoit du json et renvoi une adaptation exploitable en php. Le paramètre true impose un tableau en retour et non un objet.
+            
+            //Transforme le json reçu en array (d'ou le 'true') exploitable en php
+            $data = json_decode($postedData,true);
             
             //Traitement des données
             if (isset($_GET['id'])){
+
+                // Fonction pour mettre à jour l'usager
                 $success=updateUsager($_GET['id'],$data);
+
                 if (!$success){
                     deliver_response(404, "Not Found");
                 } else {
@@ -69,11 +100,18 @@
             } else {
                 deliver_response(400, "The 'id' is missing");
             }
+
         break;
+
+        // Si la méthode est DELETE (suppression de données)
         case "DELETE" :
+
             //Traitement des données
             if (isset($_GET['id'])){
+
+                // Fonction pour supprimer l'usager
                 $success=delUsager($_GET['id']);
+
                 if (!$success){
                     deliver_response(404, "Not Found");
                 } else {
