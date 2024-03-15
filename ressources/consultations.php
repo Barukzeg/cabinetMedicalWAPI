@@ -7,16 +7,26 @@
     $http_method = $_SERVER['REQUEST_METHOD'];
 
     switch ($http_method){
+
+        // Si la méthode est GET (récupération de données)
         case "GET" :
-            //Récupération des données dans l’URL si nécessaire
+
+            //Si l'id est set : on le récupère et récupère l'consultation correspondant
             if(isset($_GET['id'])){
+
+                //Récupération de l'id
                 $id=htmlspecialchars($_GET['id']);
-                //Traitement des données
-                $matchingData=getUsager($id);
+
+                //Appel de la fonction pour récupérer l'consultation correspondant à l'id
+                $matchingData=getConsultation($id);
+
+            //Si l'id n'est pas set : on récupère toutes les données
             } else {
-                //Appel de la fonction de lecture des phrases
-                $matchingData=getAllUsager();
+
+                //Appel de la fonction pour récupérer tous les consultations
+                $matchingData=getAllConsultation();
             }
+
             //Envoi de la réponse
             if (empty($matchingData)){
                 deliver_response(404, "Not Found");
@@ -25,65 +35,91 @@
             }
 
         break;
+
+        // Si la méthode est POST (création de données)
         case "POST" :
+
             // Récupération des données dans le corps
             $postedData = file_get_contents('php://input');
-            $data = json_decode($postedData,true); //Reçoit du json et renvoi une adaptation exploitable en php. Le paramètre true impose un tableau en retour et non un objet.
-            
-            //Traitement des données
-            $matchingData=addUsager($data);
 
+            //Transforme le json reçu en array (d'ou le 'true') exploitable en php
+            $data = json_decode($postedData,true);
+            
+            //Ajoût de l'consultation
+            $matchingData=addConsultation($data);
+
+            //Envoi de la réponse
             deliver_response(201, "Created", $matchingData);
 
         break;
+
+        // Si la méthode est PATCH (mise à jour de données partielles))
         case "PATCH" :
+
             // Récupération des données dans le corps
             $postedData = file_get_contents('php://input');
-            $data_init = getUsager($_GET['id']);
-            $data = json_decode($postedData,true); //Reçoit du json et renvoi une adaptation exploitable en php. Le paramètre true impose un tableau en retour et non un objet.
-            
-            foreach($data as $key => $value){
-                if($value==null){
-                    $data_init[$key][$value]=$data[$key][$value];
-                }
-            }
 
+            //Transforme le json reçu en array (d'ou le 'true') exploitable en php
+            $data = json_decode($postedData,true);
+            
             //Traitement des données
-            $matchingData=updateUsager($_GET['id'], $data_init);
-            if (empty($matchingData)){
-                deliver_response(404, "Not Found");
+            if (isset($_GET['id'])){
+
+                // Fonction pour mettre à jour l'consultation
+                $success=updateConsultation($_GET['id'],$data);
+
+                if (!$success){
+                    deliver_response(404, "Not Found");
+                } else {
+                    deliver_response(200, "OK");
+                }
             } else {
-                deliver_response(200, "OK", $matchingData);
+                deliver_response(400, "The 'id' is missing");
             }
         break;
+
+        // Si la méthode est PUT (mise à jour de données complètes)
         case "PUT" :
             // Récupération des données dans le corps
             $postedData = file_get_contents('php://input');
-            $data = json_decode($postedData,true); //Reçoit du json et renvoi une adaptation exploitable en php. Le paramètre true impose un tableau en retour et non un objet.
+            
+            //Transforme le json reçu en array (d'ou le 'true') exploitable en php
+            $data = json_decode($postedData,true);
             
             //Traitement des données
             if (isset($_GET['id'])){
-                $matchingData=updateUsager($_GET['id'], $data);
-                if (empty($matchingData)){
+
+                // Fonction pour mettre à jour l'consultation
+                $success=updateConsultation($_GET['id'],$data);
+
+                if (!$success){
                     deliver_response(404, "Not Found");
                 } else {
-                    deliver_response(200, "OK", $matchingData);
+                    deliver_response(200, "OK");
                 }
             } else {
-                deliver_response(400, "Bad Request");
+                deliver_response(400, "The 'id' is missing");
             }
+
         break;
+
+        // Si la méthode est DELETE (suppression de données)
         case "DELETE" :
+
             //Traitement des données
             if (isset($_GET['id'])){
-                $matchingData=delUsager($_GET['id']);
-                if (empty($matchingData)){
+
+                // Fonction pour supprimer l'consultation
+                $success=delConsultation($_GET['id']);
+
+                if (!$success){
                     deliver_response(404, "Not Found");
                 } else {
-                    deliver_response(200, "OK", $matchingData);
+                    deliver_response(200, "OK");
                 }
             } else {
-                deliver_response(400, "Bad Request");
+                deliver_response(400, "The 'id' is missing");
             }
+        break;
     }
 ?>
