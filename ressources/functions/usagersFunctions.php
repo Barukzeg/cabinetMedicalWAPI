@@ -68,7 +68,8 @@
         $ville = $data['ville'];
         $query->bindParam(':ville', $ville);
 
-        $dateNaissance = $data['date_nais'];
+        $dateN = $data['date_nais'];
+        $dateNaissance = date('Y-m-d', strtotime($dateN));
         $query->bindParam(':date_nais', $dateNaissance);
 
         $lieuNaissance = $data['lieu_nais'];
