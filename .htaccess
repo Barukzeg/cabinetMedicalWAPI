@@ -19,5 +19,6 @@ RewriteRule ^consultations$   ressources/consultations.php [L]
 RewriteRule ^consultations/([0-9]+)$   ressources/consultations.php?id=$1 [L]
 
 # Statistiques :
-RewriteRule ^statistiques$   ressources/statistiques.php [L]
-RewriteRule ^statistiques/([0-9]+)$   ressources/statistiques.php?id=$1 [L]
+RewriteRule ^stats$   ressources/statistiques.php [L]
+RewriteRule ^stats/usagers$ ressources/statistiques.php?id=1 [L]
+RewriteRule ^stats/medecins$ ressources/statistiques.php?id=2 [L]

@@ -1,6 +1,6 @@
 <?php
 
-    require_once './functions/statistiqueFunctions.php';
+    require_once './functions/statistiquesFunctions.php';
     require_once './functions/response.php';
 
     /// Identification du type de méthode HTTP envoyée par le client

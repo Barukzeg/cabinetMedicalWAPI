@@ -18,5 +18,4 @@
         /// Affichage de la réponse (Retourné au client)
         echo $json_response;
     }
-    
 ?>
