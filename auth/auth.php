@@ -66,6 +66,31 @@
             }
         }
 
+    } else if ($http_method == "GET") {
+
+        //Recuperation du token
+        $headers = getallheaders();
+        $token = $headers['Authorization'];
+
+        //Verification de la presence du token
+        if (!isset($token)) {
+            deliver_response(400, "Bad Request");
+        } else {
+
+            //Verification du token
+            $secret = "secret";
+            $jwt = explode(" ", $token)[1];
+            $payload = verify_jwt($jwt, $secret);
+
+            //Token valide
+            if ($payload != null) {
+                deliver_response(200, "CabinetMedical_AUTH : Token OK", $payload);
+            //Token invalide
+            } else {
+                deliver_response(401, "Unauthorized");
+            }
+        }
+
     } else {
 
         //Methode non autorisée (autre que POST)
