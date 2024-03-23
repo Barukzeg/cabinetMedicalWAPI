@@ -1,6 +1,6 @@
 <?php
 
-    require "jwt_utils.php";
+    require_once "jwt_utils.php";
     
     $server = "localhost";
     $db = "cabinetmedical_auth";
