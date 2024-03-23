@@ -3,7 +3,7 @@
     require "jwt_utils.php";
     
     $server = "localhost";
-    $db = "CabinetMedical_AUTH";
+    $db = "cabinetmedical_auth";
     $login = "root";
     $mdp = "";
         
@@ -70,7 +70,7 @@
 
         //Recuperation du token
         $headers = getallheaders();
-        $token = $headers['Authorization'];
+        $token = $headers['token'];
 
         //Verification de la presence du token
         if (!isset($token)) {
@@ -79,8 +79,7 @@
 
             //Verification du token
             $secret = "secret";
-            $jwt = explode(" ", $token)[1];
-            $payload = verify_jwt($jwt, $secret);
+            $payload = is_jwt_valid($token, $secret);
 
             //Token valide
             if ($payload != null) {
