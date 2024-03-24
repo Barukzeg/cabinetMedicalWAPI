@@ -38,9 +38,10 @@
             $stmt->bindParam(':password', $password);
             $stmt->execute();
             $result = $stmt->fetch();
+            $count = $result[0];
 
             //Identifiants corrects
-            if($result>=1){
+            if($count>=1){
 
                 //Creation du token
                 $headers = array(
@@ -69,8 +70,7 @@
     } else if ($http_method == "GET") {
 
         //Recuperation du token
-        $headers = getallheaders();
-        $token = $headers['token'];
+        $token = $_SERVER['HTTP_TOKEN'];
 
         //Verification de la presence du token
         if (!isset($token)) {
