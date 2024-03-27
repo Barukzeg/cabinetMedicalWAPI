@@ -1,9 +1,9 @@
 <?php
 
-    require "jwt_utils.php";
+    require_once "jwt_utils.php";
     
     $server = "localhost";
-    $db = "CabinetMedical_AUTH";
+    $db = "cabinetmedical_auth";
     $login = "root";
     $mdp = "";
         
@@ -38,9 +38,10 @@
             $stmt->bindParam(':password', $password);
             $stmt->execute();
             $result = $stmt->fetch();
+            $count = $result[0];
 
             //Identifiants corrects
-            if($result>=1){
+            if($count>=1){
 
                 //Creation du token
                 $headers = array(
@@ -62,6 +63,29 @@
 
             //Sinon renvoie de l'erreur "Unauthorized"
             }else{
+                deliver_response(401, "Unauthorized");
+            }
+        }
+
+    } else if ($http_method == "GET") {
+
+        //Recuperation du token
+        $token = $_SERVER['HTTP_TOKEN'];
+
+        //Verification de la presence du token
+        if (!isset($token)) {
+            deliver_response(400, "Bad Request");
+        } else {
+
+            //Verification du token
+            $secret = "secret";
+            $payload = is_jwt_valid($token, $secret);
+
+            //Token valide
+            if ($payload != null) {
+                deliver_response(200, "CabinetMedical_AUTH : Token OK", $payload);
+            //Token invalide
+            } else {
                 deliver_response(401, "Unauthorized");
             }
         }

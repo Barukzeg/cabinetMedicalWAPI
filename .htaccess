@@ -6,6 +6,9 @@ RewriteEngine on
 
 # Règles de réécriture d'URL :
 
+# auth :
+RewriteRule ^auths$ auth/auth.php [L]
+
 # Usagers :
 RewriteRule ^usagers$ ressources/usagers.php [L]
 RewriteRule ^usagers/([0-9]+)$ ressources/usagers.php?id=$1 [L]
