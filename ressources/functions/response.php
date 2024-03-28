@@ -20,6 +20,9 @@
     }
 
     function is_valid($token){
+
+        $url = 'https://authwapi.alwaysdata.net/auths';
+
         $headers = array(
             'Content-Type: application/json',
             'token' . $token
