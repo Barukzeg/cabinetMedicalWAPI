@@ -18,4 +18,21 @@
         /// Affichage de la réponse (Retourné au client)
         echo $json_response;
     }
+
+    function is_valid($token){
+        $headers = array(
+            'Content-Type: application/json',
+            'token' . $token
+        );
+
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        return $response;
+    }
 ?>
