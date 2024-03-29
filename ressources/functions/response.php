@@ -38,4 +38,21 @@
 
         return $response;
     }
+
+    function get_bearer_token() {
+        
+        $headers = get_authorization_header();
+
+        if (!empty($headers)) {
+
+            if (preg_match('/Bearer\s(\S+)/', $headers, $matches)) {
+
+                if($matches[1]=='null')
+                    return null;
+                else
+                    return $matches[1];
+            }
+        }
+        return null;
+    }
 ?>

@@ -5,7 +5,7 @@
 
 
     // Vérification de la validité du token
-    if (!isset($_SERVER['HTTP_TOKEN']) || !is_valid($_SERVER['HTTP_TOKEN'])) {
+    if (is_valid(get_bearer_token())) {
 
         /// Identification du type de méthode HTTP envoyée par le client
         $http_method = $_SERVER['REQUEST_METHOD'];
