@@ -3,11 +3,17 @@
     require_once './functions/statistiquesFunctions.php';
     require_once './functions/response.php';
 
+    //Vérification de l'authentification
+    $token = get_bearer_token();
+    
+    if ($token === null || !is_valid($token)) {
 
-    // Vérification de la validité du token
-    if (is_valid(get_bearer_token())) {
+        deliver_response(401, "Unauthorized");
+        exit();
 
-        /// Identification du type de méthode HTTP envoyée par le client
+    } else {
+        
+        // Identification du type de méthode HTTP envoyée par le client
         $http_method = $_SERVER['REQUEST_METHOD'];
 
         switch ($http_method){
@@ -37,7 +43,5 @@
                 deliver_response(400, "Bad Request");
                 break;
         }
-    } else {
-        deliver_response(401, "Unauthorized");
     }
 ?>

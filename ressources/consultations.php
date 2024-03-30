@@ -3,123 +3,134 @@
     require_once './functions/consultationsFunctions.php';
     require_once './functions/response.php';
 
-    /// Identification du type de méthode HTTP envoyée par le client
-    $http_method = $_SERVER['REQUEST_METHOD'];
+    //Vérification de l'authentification
+    $token = get_bearer_token();
+    
+    if ($token === null || !is_valid($token)) {
 
-    switch ($http_method){
+        deliver_response(401, "Unauthorized");
+        exit();
 
-        // Si la méthode est GET (récupération de données)
-        case "GET" :
+    } else {
 
-            //Si l'id est set : on le récupère et récupère l'consultation correspondant
-            if(isset($_GET['id'])){
+        // Identification du type de méthode HTTP envoyée par le client
+        $http_method = $_SERVER['REQUEST_METHOD'];
 
-                //Récupération de l'id
-                $id=htmlspecialchars($_GET['id']);
+        switch ($http_method){
 
-                //Appel de la fonction pour récupérer l'consultation correspondant à l'id
-                $matchingData=getConsultation($id);
+            // Si la méthode est GET (récupération de données)
+            case "GET" :
 
-            //Si l'id n'est pas set : on récupère toutes les données
-            } else {
+                //Si l'id est set : on le récupère et récupère l'consultation correspondant
+                if(isset($_GET['id'])){
 
-                //Appel de la fonction pour récupérer tous les consultations
-                $matchingData=getAllConsultation();
-            }
+                    //Récupération de l'id
+                    $id=htmlspecialchars($_GET['id']);
 
-            //Envoi de la réponse
-            if (empty($matchingData)){
-                deliver_response(404, "Not Found");
-            } else {
-                deliver_response(200, "OK", $matchingData);
-            }
+                    //Appel de la fonction pour récupérer l'consultation correspondant à l'id
+                    $matchingData=getConsultation($id);
 
-        break;
+                //Si l'id n'est pas set : on récupère toutes les données
+                } else {
 
-        // Si la méthode est POST (création de données)
-        case "POST" :
+                    //Appel de la fonction pour récupérer tous les consultations
+                    $matchingData=getAllConsultation();
+                }
 
-            // Récupération des données dans le corps
-            $postedData = file_get_contents('php://input');
-
-            //Transforme le json reçu en array (d'ou le 'true') exploitable en php
-            $data = json_decode($postedData,true);
-            
-            //Ajoût de l'consultation
-            $matchingData=addConsultation($data);
-
-            //Envoi de la réponse
-            deliver_response(201, "Created", $matchingData);
-
-        break;
-
-        // Si la méthode est PATCH (mise à jour de données partielles))
-        case "PATCH" :
-
-            // Récupération des données dans le corps
-            $postedData = file_get_contents('php://input');
-
-            //Transforme le json reçu en array (d'ou le 'true') exploitable en php
-            $data = json_decode($postedData,true);
-            
-            //Traitement des données
-            if (isset($_GET['id'])){
-
-                // Fonction pour mettre à jour l'consultation
-                $success=updateConsultation($_GET['id'],$data);
-
-                if (!$success){
+                //Envoi de la réponse
+                if (empty($matchingData)){
                     deliver_response(404, "Not Found");
                 } else {
-                    deliver_response(200, "OK");
+                    deliver_response(200, "OK", $matchingData);
                 }
-            } else {
-                deliver_response(400, "The 'id' is missing");
-            }
-        break;
 
-        // Si la méthode est PUT (mise à jour de données complètes)
-        case "PUT" :
-            // Récupération des données dans le corps
-            $postedData = file_get_contents('php://input');
-            
-            //Transforme le json reçu en array (d'ou le 'true') exploitable en php
-            $data = json_decode($postedData,true);
-            
-            //Traitement des données
-            if (isset($_GET['id'])){
+            break;
 
-                // Fonction pour mettre à jour l'consultation
-                $success=updateConsultation($_GET['id'],$data);
+            // Si la méthode est POST (création de données)
+            case "POST" :
 
-                if (!$success){
-                    deliver_response(404, "Not Found");
+                // Récupération des données dans le corps
+                $postedData = file_get_contents('php://input');
+
+                //Transforme le json reçu en array (d'ou le 'true') exploitable en php
+                $data = json_decode($postedData,true);
+                
+                //Ajoût de l'consultation
+                $matchingData=addConsultation($data);
+
+                //Envoi de la réponse
+                deliver_response(201, "Created", $matchingData);
+
+            break;
+
+            // Si la méthode est PATCH (mise à jour de données partielles))
+            case "PATCH" :
+
+                // Récupération des données dans le corps
+                $postedData = file_get_contents('php://input');
+
+                //Transforme le json reçu en array (d'ou le 'true') exploitable en php
+                $data = json_decode($postedData,true);
+                
+                //Traitement des données
+                if (isset($_GET['id'])){
+
+                    // Fonction pour mettre à jour l'consultation
+                    $success=updateConsultation($_GET['id'],$data);
+
+                    if (!$success){
+                        deliver_response(404, "Not Found");
+                    } else {
+                        deliver_response(200, "OK");
+                    }
                 } else {
-                    deliver_response(200, "OK");
+                    deliver_response(400, "The 'id' is missing");
                 }
-            } else {
-                deliver_response(400, "The 'id' is missing");
-            }
+            break;
 
-        break;
+            // Si la méthode est PUT (mise à jour de données complètes)
+            case "PUT" :
+                // Récupération des données dans le corps
+                $postedData = file_get_contents('php://input');
+                
+                //Transforme le json reçu en array (d'ou le 'true') exploitable en php
+                $data = json_decode($postedData,true);
+                
+                //Traitement des données
+                if (isset($_GET['id'])){
 
-        // Si la méthode est DELETE (suppression de données)
-        case "DELETE" :
+                    // Fonction pour mettre à jour l'consultation
+                    $success=updateConsultation($_GET['id'],$data);
 
-            //Traitement des données
-            if (isset($_GET['id'])){
-
-                // Fonction pour supprimer l'consultation
-                $success=delConsultation($_GET['id']);
-
-                if (!$success){
-                    deliver_response(404, "Not Found");
+                    if (!$success){
+                        deliver_response(404, "Not Found");
+                    } else {
+                        deliver_response(200, "OK");
+                    }
                 } else {
-                    deliver_response(200, "OK");
+                    deliver_response(400, "The 'id' is missing");
                 }
-            } else {
-                deliver_response(400, "The 'id' is missing");
-            }
-        break;
+
+            break;
+
+            // Si la méthode est DELETE (suppression de données)
+            case "DELETE" :
+
+                //Traitement des données
+                if (isset($_GET['id'])){
+
+                    // Fonction pour supprimer l'consultation
+                    $success=delConsultation($_GET['id']);
+
+                    if (!$success){
+                        deliver_response(404, "Not Found");
+                    } else {
+                        deliver_response(200, "OK");
+                    }
+                } else {
+                    deliver_response(400, "The 'id' is missing");
+                }
+            break;
+        }
     }
 ?>

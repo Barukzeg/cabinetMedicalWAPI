@@ -25,7 +25,7 @@
 
         $headers = array(
             'Content-Type: application/json',
-            'token' . $token
+            'Authorization: Bearer ' . $token
         );
 
         $curl = curl_init();
@@ -36,7 +36,12 @@
         $response = curl_exec($curl);
         curl_close($curl);
 
-        return $response;
+        $responseJson = json_decode($response, true);
+    
+        if (!isset($responseJson['status_code']) || $responseJson['status_code'] != 200) {
+            return false;
+        }
+        return $responseJson['status_code'] == 200;
     }
 
     function get_bearer_token() {
@@ -54,5 +59,25 @@
             }
         }
         return null;
+    }
+
+    function get_authorization_header(){
+        $headers = null;
+    
+        if (isset($_SERVER['Authorization'])) {
+            $headers = trim($_SERVER["Authorization"]);
+        } else if (isset($_SERVER['HTTP_AUTHORIZATION'])) { //Nginx or fast CGI
+            $headers = trim($_SERVER["HTTP_AUTHORIZATION"]);
+        } else if (function_exists('apache_request_headers')) {
+            $requestHeaders = apache_request_headers();
+            // Server-side fix for bug in old Android versions (a nice side-effect of this fix means we don't care about capitalization for Authorization)
+            $requestHeaders = array_combine(array_map('ucwords', array_keys($requestHeaders)), array_values($requestHeaders));
+            //print_r($requestHeaders);
+            if (isset($requestHeaders['Authorization'])) {
+                $headers = trim($requestHeaders['Authorization']);
+            }
+        }
+    
+        return $headers;
     }
 ?>

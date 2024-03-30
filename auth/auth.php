@@ -70,7 +70,7 @@
     } else if ($http_method == "GET") {
 
         //Recuperation du token
-        $token = $_SERVER['HTTP_TOKEN'];
+        $token = get_bearer_token();
 
         //Verification de la presence du token
         if (!isset($token)) {
