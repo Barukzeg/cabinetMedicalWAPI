@@ -1,20 +1,25 @@
 <?php
     function deliver_response($status_code, $status_message, $data=null){
+
         // var_dump($data);
         $json_response = json_encode($data);
         if($json_response===false)
-        die('json encode ERROR : '.json_last_error_msg());
+            die('json encode ERROR : '.json_last_error_msg());
+
         /// Paramétrage de l'entête HTTP
         http_response_code($status_code); //Utilise un message standardisé en fonction du code HTTP
+
         //header("HTTP/1.1 $status_code $status_message"); //Permet de personnaliser le message associé au code HTTP
         header("Content-Type:application/json; charset=utf-8");//Indique au client le format de la réponse
         $response['status_code'] = $status_code;
         $response['status_message'] = $status_message;
         $response['data'] = $data;
+
         /// Mapping de la réponse au format JSON
         $json_response = json_encode($response);
         if($json_response===false)
-        die('json encode ERROR : '.json_last_error_msg());
+            die('json encode ERROR : '.json_last_error_msg());
+
         /// Affichage de la réponse (Retourné au client)
         echo $json_response;
     }
@@ -66,18 +71,21 @@
     
         if (isset($_SERVER['Authorization'])) {
             $headers = trim($_SERVER["Authorization"]);
+
         } else if (isset($_SERVER['HTTP_AUTHORIZATION'])) { //Nginx or fast CGI
             $headers = trim($_SERVER["HTTP_AUTHORIZATION"]);
+
         } else if (function_exists('apache_request_headers')) {
             $requestHeaders = apache_request_headers();
+
             // Server-side fix for bug in old Android versions (a nice side-effect of this fix means we don't care about capitalization for Authorization)
             $requestHeaders = array_combine(array_map('ucwords', array_keys($requestHeaders)), array_values($requestHeaders));
+
             //print_r($requestHeaders);
             if (isset($requestHeaders['Authorization'])) {
                 $headers = trim($requestHeaders['Authorization']);
             }
         }
-    
         return $headers;
     }
 ?>

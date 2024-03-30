@@ -84,7 +84,7 @@
                         deliver_response(200, "OK");
                     }
                 } else {
-                    deliver_response(400, "The 'id' is missing");
+                    deliver_response(400, "Bad Request");
                 }
             break;
 
@@ -108,7 +108,7 @@
                         deliver_response(200, "OK");
                     }
                 } else {
-                    deliver_response(400, "The 'id' is missing");
+                    deliver_response(400, "Bad Request");
                 }
 
             break;
@@ -125,10 +125,10 @@
                     if (!$success){
                         deliver_response(404, "Not Found");
                     } else {
-                        deliver_response(200, "OK");
+                        deliver_response(204, "No content");
                     }
                 } else {
-                    deliver_response(400, "The 'id' is missing");
+                    deliver_response(400, "Bad Request");
                 }
             break;
         }
