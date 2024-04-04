@@ -1,6 +1,6 @@
 <?php
 
-    require_once './functions/MedecinsFunctions.php';
+    require_once './functions/medecinsFunctions.php';
     require_once './functions/response.php';
 
     //Vérification de l'authentification
