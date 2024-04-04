@@ -49,66 +49,80 @@
             // Si la méthode est POST (création de données)
             case "POST" :
 
-                // Récupération des données dans le corps
-                $postedData = file_get_contents('php://input');
+                try{
+                    // Récupération des données dans le corps
+                    $postedData = file_get_contents('php://input');
 
-                //Transforme le json reçu en array (d'ou le 'true') exploitable en php
-                $data = json_decode($postedData,true);
-                
-                //Ajoût de l'consultation
-                $matchingData=addConsultation($data);
+                    //Transforme le json reçu en array (d'ou le 'true') exploitable en php
+                    $data = json_decode($postedData,true);
+                    
+                    //Ajoût de l'consultation
+                    $matchingData=addConsultation($data);
 
-                //Envoi de la réponse
-                deliver_response(201, "Created", $matchingData);
+                    //Envoi de la réponse
+                    deliver_response(201, "Created", $matchingData);
+                } catch (Exception $e){
+                    deliver_response(403, "Forbidden");
+                }
 
             break;
 
             // Si la méthode est PATCH (mise à jour de données partielles))
             case "PATCH" :
 
-                // Récupération des données dans le corps
-                $postedData = file_get_contents('php://input');
+                try{
+                    // Récupération des données dans le corps
+                    $postedData = file_get_contents('php://input');
 
-                //Transforme le json reçu en array (d'ou le 'true') exploitable en php
-                $data = json_decode($postedData,true);
-                
-                //Traitement des données
-                if (isset($_GET['id'])){
+                    //Transforme le json reçu en array (d'ou le 'true') exploitable en php
+                    $data = json_decode($postedData,true);
+                    
+                    //Traitement des données
+                    if (isset($_GET['id'])){
 
-                    // Fonction pour mettre à jour l'consultation
-                    $success=updateConsultation($_GET['id'],$data);
+                        // Fonction pour mettre à jour l'consultation
+                        $success=updateConsultation($_GET['id'],$data);
 
-                    if (!$success){
-                        deliver_response(404, "Not Found");
+                        if (!$success){
+                            deliver_response(404, "Not Found");
+                        } else {
+                            deliver_response(200, "OK");
+                        }
                     } else {
-                        deliver_response(200, "OK");
+                        deliver_response(400, "Bad request");
                     }
-                } else {
-                    deliver_response(400, "Bad request");
+                } catch (Exception $e){
+                    deliver_response(403, "Forbidden");
                 }
+
             break;
 
             // Si la méthode est PUT (mise à jour de données complètes)
             case "PUT" :
-                // Récupération des données dans le corps
-                $postedData = file_get_contents('php://input');
-                
-                //Transforme le json reçu en array (d'ou le 'true') exploitable en php
-                $data = json_decode($postedData,true);
-                
-                //Traitement des données
-                if (isset($_GET['id'])){
 
-                    // Fonction pour mettre à jour l'consultation
-                    $success=updateConsultation($_GET['id'],$data);
+                try{
+                    // Récupération des données dans le corps
+                    $postedData = file_get_contents('php://input');
+                    
+                    //Transforme le json reçu en array (d'ou le 'true') exploitable en php
+                    $data = json_decode($postedData,true);
+                    
+                    //Traitement des données
+                    if (isset($_GET['id'])){
 
-                    if (!$success){
-                        deliver_response(404, "Not Found");
+                        // Fonction pour mettre à jour l'consultation
+                        $success=updateConsultation($_GET['id'],$data);
+
+                        if (!$success){
+                            deliver_response(404, "Not Found");
+                        } else {
+                            deliver_response(200, "OK");
+                        }
                     } else {
-                        deliver_response(200, "OK");
-                    }
-                } else {
-                    deliver_response(400, "Bad request");
+                        deliver_response(400, "Bad request");
+                    }                
+                } catch (Exception $e){
+                    deliver_response(403, "Forbidden");
                 }
 
             break;
@@ -116,19 +130,23 @@
             // Si la méthode est DELETE (suppression de données)
             case "DELETE" :
 
-                //Traitement des données
-                if (isset($_GET['id'])){
+                try{
+                    //Traitement des données
+                    if (isset($_GET['id'])){
 
-                    // Fonction pour supprimer l'consultation
-                    $success=delConsultation($_GET['id']);
+                        // Fonction pour supprimer l'consultation
+                        $success=delConsultation($_GET['id']);
 
-                    if (!$success){
-                        deliver_response(404, "Not Found");
+                        if (!$success){
+                            deliver_response(404, "Not Found");
+                        } else {
+                            deliver_response(204, "No content");
+                        }
                     } else {
-                        deliver_response(204, "No content");
+                        deliver_response(400, "Bad request");
                     }
-                } else {
-                    deliver_response(400, "Bad request");
+                } catch (Exception $e){
+                    deliver_response(403, "Forbidden");
                 }
             break;
         }

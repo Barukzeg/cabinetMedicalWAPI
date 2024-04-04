@@ -25,7 +25,7 @@
 
         // Requête pour récupérer un usager
         $query = $linkpdo->prepare("SELECT u.* 
-                                        FROM Usager u 
+                                        FROM usager u 
                                         WHERE u.id_usager = :id");
         $query->bindParam(':id', $id);
         $query->execute();
@@ -43,7 +43,7 @@
         $linkpdo = BDD::getBDD()->getConnection();
 
         // Requête pour ajouter un usager
-        $query = $linkpdo->prepare("INSERT INTO Usager (civilite, nom, prenom, sexe, adresse, code_postal, ville, date_nais, lieu_nais, num_secu, id_medecin) 
+        $query = $linkpdo->prepare("INSERT INTO usager (civilite, nom, prenom, sexe, adresse, code_postal, ville, date_nais, lieu_nais, num_secu, id_medecin) 
             VALUES (:civilite, :nom, :prenom, :sexe, :adresse, :code_postal, :ville, :date_nais, :lieu_nais, :num_secu, :id_medecin)");
 
         // Bind des paramètres
@@ -108,7 +108,7 @@
             }
 
             // Requête pour mettre à jour un usager
-            $query = $linkpdo->prepare("UPDATE Usager
+            $query = $linkpdo->prepare("UPDATE usager
             SET civilite = :civilite, 
                 nom = :nom, 
                 prenom = :prenom, 
@@ -186,7 +186,7 @@
         $linkpdo = BDD::getBDD()->getConnection();
 
         // Requête pour supprimer un usager
-        $query = $linkpdo->prepare("DELETE FROM Usager WHERE id_usager = :id");
+        $query = $linkpdo->prepare("DELETE FROM usager WHERE id_usager = :id");
 
         $query->bindParam(':id', $id);
         $delete = $query->execute();

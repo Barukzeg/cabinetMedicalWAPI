@@ -25,7 +25,7 @@
 
         // Requête pour récupérer un medecin
         $query = $linkpdo->prepare("SELECT u.* 
-                                        FROM Medecin u 
+                                        FROM medecin u 
                                         WHERE u.id_medecin = :id");
         $query->bindParam(':id', $id);
         $query->execute();
@@ -83,7 +83,7 @@
             }
 
             // Requête pour mettre à jour un medecin
-            $query = $linkpdo->prepare("UPDATE Medecin
+            $query = $linkpdo->prepare("UPDATE medecin
                                         SET civilite = :civilite, 
                                             nom = :nom, 
                                             prenom = :prenom
@@ -129,7 +129,7 @@
         $linkpdo = BDD::getBDD()->getConnection();
 
         // Requête pour supprimer un medecin
-        $query = $linkpdo->prepare("DELETE FROM Medecin WHERE id_medecin = :id");
+        $query = $linkpdo->prepare("DELETE FROM medecin WHERE id_medecin = :id");
 
         $query->bindParam(':id', $id);
         $delete = $query->execute();

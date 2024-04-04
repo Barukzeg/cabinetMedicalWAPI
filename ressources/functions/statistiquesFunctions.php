@@ -17,7 +17,7 @@
                        SUM(IF(date_nais > DATE_SUB(CURDATE(), INTERVAL 25 YEAR), 1, 0)) AS usagers_moins_25,
                        SUM(IF(date_nais BETWEEN DATE_SUB(CURDATE(), INTERVAL 50 YEAR) AND DATE_SUB(CURDATE(), INTERVAL 25 YEAR), 1, 0)) AS usagers_25_50,
                        SUM(IF(date_nais < DATE_SUB(CURDATE(), INTERVAL 50 YEAR), 1, 0)) AS usagers_plus_50
-                FROM Usager
+                FROM usager
                 GROUP BY sexe;
             ");
             

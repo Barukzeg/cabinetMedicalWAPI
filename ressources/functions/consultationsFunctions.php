@@ -8,7 +8,7 @@
         $linkpdo = BDD::getBDD()->getConnection();
 
         // Requête pour récupérer tous les usagers
-        $query = $linkpdo->prepare("SELECT * FROM Consultation;");
+        $query = $linkpdo->prepare("SELECT * FROM consultation;");
         $query->execute();
 
         // Retourne les données
@@ -23,7 +23,7 @@
 
         // Requête pour récupérer une consultation
         $query = $linkpdo->prepare("SELECT u.* 
-                                        FROM Consultation u 
+                                        FROM consultation u 
                                         WHERE u.idConsultation = :id");
         $query->bindParam(':id', $id);
         $query->execute();
@@ -39,7 +39,7 @@
         $linkpdo = BDD::getBDD()->getConnection();
 
         // Requête pour ajouter une consultation
-        $query = $linkpdo->prepare("INSERT INTO Consultation (date_consult, heure_consult, duree_consult, id_medecin, id_usager) 
+        $query = $linkpdo->prepare("INSERT INTO consultation (date_consult, heure_consult, duree_consult, id_medecin, id_usager) 
             VALUES (:date_consult, :heure_consult, :duree_consult, :id_medecin, :id_usager)");
 
         
@@ -72,7 +72,7 @@
         $linkpdo = BDD::getBDD()->getConnection();
 
         // Requête pour mettre à jour une consultation
-        $query = $linkpdo->prepare("INSERT INTO Consultation (date_consult, heure_consult, duree_consult, id_medecin, id_usager) 
+        $query = $linkpdo->prepare("INSERT INTO consultation (date_consult, heure_consult, duree_consult, id_medecin, id_usager) 
             VALUES (:date_consult, :heure_consult, :duree_consult, :id_medecin, :id_usager)");
 
         // Bind des paramètres
@@ -104,7 +104,7 @@
         $linkpdo = BDD::getBDD()->getConnection();
 
         // Requête pour supprimer une consultation
-        $query = $linkpdo->prepare("DELETE FROM Consultation WHERE idConsultation = :id");
+        $query = $linkpdo->prepare("DELETE FROM consultation WHERE idConsultation = :id");
 
         $query->bindParam(':id', $id);
         $query->execute();
