@@ -8,7 +8,7 @@
         $data = array();
         // Connexion à la base de données
         $linkpdo = BDD::getBDD()->getConnection();
-
+        echo $id;
         // Si l'id est 1, on récupère les statistiques concernant les usagers
         if ($id == 1) {
 
@@ -41,16 +41,15 @@
 
             // Requête pour récupérer pour chaque medecin son nom prénom et la somme du nombre d'heures de consultations qu'il a déjà effectué
             $query = $linkpdo->prepare("SELECT m.nom, m.prenom, SUM(c.duree_consult) as duree_consult
-                                        FROM Medecin m
-                                        JOIN Consultation c ON m.id_medecin = c.id_medecin
+                                        FROM medecin m
+                                        JOIN consultation c ON m.id_medecin = c.id_medecin
                                         GROUP BY m.id_medecin;");
 
             $query->execute();
             $matchingData = $query->fetchAll(PDO::FETCH_ASSOC);
-            $data['medecins_nb_heures'] = $matchingData;
         }
 
         // Retourne les données
-        return $data;
+        return $matchingData;
     }
 ?>
