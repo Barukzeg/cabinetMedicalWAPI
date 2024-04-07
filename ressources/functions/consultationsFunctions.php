@@ -38,7 +38,7 @@
         // Connexion à la base de données
         $linkpdo = BDD::getBDD()->getConnection();
 
-        $date = DateTime::createFromFormat('d/m/Y', $data['date_consult']);
+        $date = DateTime::createFromFormat('d/m/y', $data['date_consult']);
         $formattedDate = $date->format('Y-m-d');
 
         // Requête pour ajouter une consultation
@@ -72,32 +72,60 @@
     function updateConsultation(int $id, $data){
         // Connexion à la base de données
         $linkpdo = BDD::getBDD()->getConnection();
+        
+        try {
+            // Récupération des données de la consultation à modifier
+            $get = getConsultation($id);
 
-        // Requête pour mettre à jour une consultation
-        $query = $linkpdo->prepare("INSERT INTO consultation (date_consult, heure_consult, duree_consult, id_medecin, id_usager) 
-            VALUES (:date_consult, :heure_consult, :duree_consult, :id_medecin, :id_usager)");
+            if (empty($get)) {
+                return false;
+            }
+            
+            // Mise à jour des données grâce aux données reçues
+            foreach ($get as $key => $value) {
+                if (!isset($data[$key])) {
+                    $data[$key] = $value;
+                }
+            }
 
-        // Bind des paramètres
-        $date = $data['date_consult'];
-        $query->bindParam(':date_consult', $date);
+            // Requête pour mettre à jour une consultation
+            $query = $linkpdo->prepare("UPDATE consultation
+                                        SET date_consult = :date_consult, 
+                                            heure_consult = :heure_consult, 
+                                            duree_consult = :duree_consult, 
+                                            id_medecin = :id_medecin, 
+                                            id_usager = :id_usager
+                                        WHERE id_consult = :id_consult");
 
-        $heure = $data['heure_consult'];
-        $query->bindParam(':heure_consult', $heure);
+            // Bind des paramètres
+            $query->bindParam(':id_consult', $id);
 
-        $duree = $data['duree_consult'];
-        $query->bindParam(':duree_consult', $duree);
+            $date = DateTime::createFromFormat('d/m/y', $data['date_consult']);
+            $formattedDate = $date->format('Y-m-d');
+            $query->bindParam(':date_consult', $formattedDate);
 
-        $idMedecin = $data['id_medecin'];
-        $query->bindParam(':id_medecin', $idMedecin);
+            $heure = $data['heure_consult'];
+            $query->bindParam(':heure_consult', $heure);
 
-        $idUsager = $data['id_usager'];
-        $query->bindParam(':id_usager', $idUsager);
+            $duree = $data['duree_consult'];
+            $query->bindParam(':duree_consult', $duree);
 
-        $query->execute();
+            $idMedecin = $data['id_medecin'];
+            $query->bindParam(':id_medecin', $idMedecin);
 
-        // Retourne les données
-        $matchingData = $query->fetchAll(PDO::FETCH_ASSOC);
-        return $matchingData;
+            $idUsager = $data['id_usager'];
+            $query->bindParam(':id_usager', $idUsager);
+
+            $update = $query->execute();
+
+            $success = $update;
+        
+            // Retourne le résultat
+            return $success;
+
+        } catch (PDOException $e) {
+            die("Erreur de mise à jour dans la base de données: " . $e->getMessage());
+        }
     }
 
     // Fonction pour supprimer une consultation
