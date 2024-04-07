@@ -128,20 +128,8 @@
         $query->bindParam(':id', $id);
         $delete = $query->execute();
 
-        // Vérification de la suppression
-        if ($delete) {
-            $rowCount = $query->rowCount();
-            if ($rowCount > 0) {
-                $success = true;
-            } else {
-                $success = false;
-            }
-        } else {
-            $success = false;
-        }
-
         // Retourne le résultat
-        return $success;
+        return $delete;
     }
     
 ?>
