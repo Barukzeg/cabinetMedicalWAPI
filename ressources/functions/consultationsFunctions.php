@@ -38,14 +38,16 @@
         // Connexion à la base de données
         $linkpdo = BDD::getBDD()->getConnection();
 
+        $date = DateTime::createFromFormat('d/m/Y', $data['date_consult']);
+        $formattedDate = $date->format('Y-m-d');
+
         // Requête pour ajouter une consultation
         $query = $linkpdo->prepare("INSERT INTO consultation (date_consult, heure_consult, duree_consult, id_medecin, id_usager) 
             VALUES (:date_consult, :heure_consult, :duree_consult, :id_medecin, :id_usager)");
 
         
         // Bind des paramètres
-        $date = $data['date_consult'];
-        $query->bindParam(':date_consult', $date);
+        $query->bindParam(':date_consult', $formattedDate);
 
         $heure = $data['heure_consult'];
         $query->bindParam(':heure_consult', $heure);

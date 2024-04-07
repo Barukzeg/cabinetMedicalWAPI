@@ -69,7 +69,8 @@
         $query->bindParam(':ville', $ville);
 
         $dateN = $data['date_nais'];
-        $dateNaissance = date('Y-m-d', strtotime($dateN));
+        $date = DateTime::createFromFormat('d/m/Y', $dateN);
+        $dateNaissance = $date->format('Y-m-d');
         $query->bindParam(':date_nais', $dateNaissance);
 
         $lieuNaissance = $data['lieu_nais'];
