@@ -47,9 +47,11 @@
 
             $query->execute();
             $matchingData = $query->fetchAll(PDO::FETCH_ASSOC);
+
+            $data = $matchingData;
         }
 
         // Retourne les données
-        return $matchingData;
+        return $data;
     }
 ?>
