@@ -137,11 +137,7 @@
                         // Fonction pour supprimer l'consultation
                         $success=delConsultation($_GET['id']);
 
-                        if (!$success){
-                            deliver_response(404, "Not Found");
-                        } else {
-                            deliver_response(200, "OK");
-                        }
+                        deliver_response(200, "OK");
                     } else {
                         deliver_response(400, "Bad request");
                     }
