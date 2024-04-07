@@ -137,11 +137,10 @@
         $query = $linkpdo->prepare("DELETE FROM consultation WHERE id_consult = :id");
 
         $query->bindParam(':id', $id);
-        $query->execute();
+        $success = $query->execute();
 
         // Retourne les données
-        $matchingData = $query->fetchAll(PDO::FETCH_ASSOC);
-        return $matchingData;
+        return $success;
     }
     
 ?>
