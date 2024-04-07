@@ -91,7 +91,7 @@
                                         SET civilite = :civilite, 
                                             nom = :nom, 
                                             prenom = :prenom
-                                        WHERE id_medecin = :id");
+                                        WHERE id_medecin = :id_medecin");
 
                 // Bind des paramètres
                 $query->bindParam(':id_medecin', $id);
