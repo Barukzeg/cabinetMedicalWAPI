@@ -74,6 +74,10 @@
 
             // Récupération des données de l'medecin à modifier
             $get = getmedecin($id);
+
+            if (empty($get)) {
+                return false;
+            }
             
             // Mise à jour des données grâce aux données reçues
             foreach ($get as $key => $value) {
@@ -103,17 +107,7 @@
 
                 $update = $query->execute();
 
-                // Vérification de la mise à jour
-                if ($update) {
-                    $rowCount = $query->rowCount();
-                    if ($rowCount > 0) {
-                        $success = true;
-                    } else {
-                        $success = false;
-                    }
-                } else {
-                    $success = false;
-                }
+                $success = $update;
             
             // Retourne le résultat
             return $success;
