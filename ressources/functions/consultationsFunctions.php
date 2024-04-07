@@ -24,7 +24,7 @@
         // Requête pour récupérer une consultation
         $query = $linkpdo->prepare("SELECT u.* 
                                         FROM consultation u 
-                                        WHERE u.idConsultation = :id");
+                                        WHERE u.id_consult = :id");
         $query->bindParam(':id', $id);
         $query->execute();
 
@@ -134,7 +134,7 @@
         $linkpdo = BDD::getBDD()->getConnection();
 
         // Requête pour supprimer une consultation
-        $query = $linkpdo->prepare("DELETE FROM consultation WHERE idConsultation = :id");
+        $query = $linkpdo->prepare("DELETE FROM consultation WHERE id_consult = :id");
 
         $query->bindParam(':id', $id);
         $query->execute();
