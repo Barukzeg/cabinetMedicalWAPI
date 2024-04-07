@@ -136,7 +136,7 @@
                         if (!$success){
                             deliver_response(404, "Not Found");
                         } else {
-                            deliver_response(204, "No content");
+                            deliver_response(200, "OK");
                         }
                     } else {
                         deliver_response(400, "Bad Request");
